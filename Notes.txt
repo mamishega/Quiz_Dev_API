@@ -1,0 +1,48 @@
+Prevent route errors when required parameter was not provided in the query string of the URL for Route Parameter
+================================================================================================================
+
+To prevent an error when the loginid is not supplied in the URL for the given code, you can make the loginid parameter optional by providing a default value.
+
+eg: app.MapGet("/getuser", (string loginid) => GetUserByLoginID(loginid ?? string.Empty, connectionString));
+
+In this code, the loginid parameter is marked as optional by providing a default value of string.Empty using the null-coalescing operator (??). If the loginid value is not supplied in the URL, it will default to an empty string. You can adjust the default value to suit your specific requirements.
+
+With this modification, even if the loginid is not provided in the URL, the code will execute without throwing an error. However, you'll need to handle the case where the loginid is empty within the GetUserByLoginID method or wherever it's used.
+
+
+
+Prevent route errors when required parameter was not provided in the query string of the URL for Query Paramater
+================================================================================================================
+
+app.MapGet("/getuser", (string loginid) => GetUserByLoginID(loginid ?? string.Empty, connectionString));
+
+400 bad request error is thrown when using http://localhost:5245/getuser/
+
+Use:
+
+app.MapGet("/getuser", (HttpContext context) =>
+{
+    string loginid = context.Request.Query["loginid"].ToString();
+    if (string.IsNullOrEmpty(loginid))
+    {
+        return context.Response.WriteAsync("Please supply a Login ID");
+    }
+    
+    return context.Response.WriteAsync(GetUserByLoginID(loginid, connectionString));
+});
+
+In this updated code, the /getuser endpoint takes the HttpContext object as a parameter instead of the loginid directly. Then, it retrieves the value of the loginid parameter from the query string using context.Request.Query["loginid"].ToString(). If the loginid is empty or not provided, it returns an error message directly.
+
+By handling the missing parameter explicitly, you can prevent the BadHttpRequestException and provide a meaningful response when the loginid parameter is not provided in the URL.
+
+
+
+Prevent errors when no user is found from supplied in the URL
+=============================================================
+    // User not found error
+    return ErrorHandler("User not found");
+
+
+
+
+
