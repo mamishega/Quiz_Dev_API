@@ -11,11 +11,11 @@ internal partial class Program
             {
                 await connection.OpenAsync();
 
-                string SqlStatement = "UPDATE quiz_users SET user_status = TRUE WHERE login_id = @LoginId";
+                string SqlStatement = "UPDATE quiz_users SET user_status = TRUE WHERE login_id = @loginId";
 
                 using (NpgsqlCommand command = new NpgsqlCommand(SqlStatement, connection))
                 {
-                    command.Parameters.AddWithValue("@LoginId", NpgsqlTypes.NpgsqlDbType.Varchar, LoginId);
+                    command.Parameters.AddWithValue("@loginId", NpgsqlTypes.NpgsqlDbType.Varchar, LoginId);
 
                     await command.ExecuteNonQueryAsync();
                 }

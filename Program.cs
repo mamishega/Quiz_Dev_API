@@ -141,7 +141,7 @@ internal partial class Program
         });
 
 
-    //Deactivate users to get access to quiz http://localhost:5000/deactivateuser?loginid=moshsh
+    //Deactivate users to get access to quiz http://localhost:5000/deactivateuser?login_id=moshsh
         app.MapPut("/deactivateuser", (string LoginId) => DeactivateUser(LoginId ?? string.Empty,connectionString));
 
     // Return json of all questions and options eg: http://localhost:5000/getallquiz
@@ -200,7 +200,27 @@ internal partial class Program
         });
         
 
+        //Login endpoint URL eg: http://localhost:5000/userlogin?/login_id=munaali&password_hash=123456
+        app.MapPost("/userlogin", async(context) => 
+        {
+            //Get the value of the "LoginId"
+            string? LoginId = context.Request.Query["login_id"];
 
+            //Get the value of password
+            string? Password = context.Request.Query["password_hash"];
+
+            //check if LoginId or password is Null or empty
+            if(string.IsNullOrEmpty(LoginId) || string.IsNullOrEmpty(Password))
+            {
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync("Login ID or Password is missing");
+                return;
+            }
+
+            bool LoginSuccessful = await UserLogin(LoginId, Password, connectionString);
+
+            await context.Response.WriteAsync(LoginSuccessful ? "Login Successful" : "Login Failed");
+        });
 
 
         app.Run();
