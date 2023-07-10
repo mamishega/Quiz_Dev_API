@@ -1,9 +1,9 @@
 using Newtonsoft.Json;
 using Npgsql;
-
+using BCrypt.Net;
 internal partial class Program
 {
-    public static async Task<string?> AddUser(string loginid, string firstname, string lastname, string connectionString)
+    public static async Task<string?> AddUser(string loginid, string firstname, string lastname, string Password, string connectionString)
     {
         // Convert the loginid to lowercase
         loginid = loginid.ToLower();
@@ -47,8 +47,11 @@ internal partial class Program
                 }
             }
 
+            //Hash the password using bcrypt
+            string hashedPassword =BCrypt.Net.BCrypt.HashPassword(Password, BCrypt.Net.BCrypt.GenerateSalt(12));
+
             // Insert the new user record into the quiz_users table
-            sqlstatement = @"INSERT INTO quiz_users (login_id, first_name, last_name) VALUES (@loginid, @firstname, @lastname)";
+            sqlstatement = @"INSERT INTO quiz_users (login_id, first_name, last_name, password_hash) VALUES (@loginid, @firstname, @lastname, @password)";
 
             // Create a new NpgsqlCommand object with the insert SQL statement and the database connection
             using (NpgsqlCommand command = new NpgsqlCommand(sqlstatement, connection))
@@ -57,6 +60,7 @@ internal partial class Program
                 command.Parameters.AddWithValue("@loginid", NpgsqlTypes.NpgsqlDbType.Varchar, loginid);
                 command.Parameters.AddWithValue("@firstname", NpgsqlTypes.NpgsqlDbType.Varchar, firstname);
                 command.Parameters.AddWithValue("@lastname", NpgsqlTypes.NpgsqlDbType.Varchar, lastname);
+                command.Parameters.AddWithValue("@password", NpgsqlTypes.NpgsqlDbType.Varchar, hashedPassword);
 
                 // Execute the command and retrieve the scalar result asynchronously
                 await command.ExecuteScalarAsync();

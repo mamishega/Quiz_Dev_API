@@ -47,7 +47,9 @@ internal partial class Program
 
         cmd.CommandText = @"CREATE TABLE IF NOT EXISTS  quiz_users (login_id VARCHAR NOT NULL UNIQUE,
                 first_name VARCHAR NOT NULL,
-                last_name VARCHAR NOT NULL)";
+                last_name VARCHAR NOT NULL,
+                password_hash VARCHAR NOT NULL,
+                user_status BOOL DEFAULT FALSE)";
         cmd.ExecuteNonQuery();
 
         cmd.CommandText = @"CREATE TABLE IF NOT EXISTS  quiz_history (login_id VARCHAR NOT NULL,
