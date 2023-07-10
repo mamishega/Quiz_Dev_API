@@ -1,0 +1,9 @@
+
+Users table
+============
+CREATE TABLE IF NOT EXISTS  quiz_users (
+                login_id VARCHAR NOT NULL UNIQUE,
+                first_name VARCHAR NOT NULL,
+                last_name VARCHAR NOT NULL,
+                password_hash VARCHAR(255) NOT NULL;
+                user_status BOOL DEFAULT FALSE);
