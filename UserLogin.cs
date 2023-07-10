@@ -11,20 +11,16 @@ internal partial class Program
             {
                 await connection.OpenAsync();
 
-                //Hash the password using bcrypt
-                string hashedPassword =BCrypt.Net.BCrypt.HashPassword(Password, BCrypt.Net.BCrypt.GenerateSalt(12));
-    
-
-                string SqlStatement = "SELECT COUNT(*) FROM quiz_users WHERE login_id = @LoginId AND password_hash = @Password";
+                string SqlStatement = "SELECT password_hash FROM quiz_users WHERE login_id = @LoginId";
 
                 using (NpgsqlCommand command = new NpgsqlCommand(SqlStatement, connection))
                 {
                     command.Parameters.AddWithValue("@LoginId", NpgsqlTypes.NpgsqlDbType.Varchar, LoginId);
-                    command.Parameters.AddWithValue("@Password", NpgsqlTypes.NpgsqlDbType.Varchar,hashedPassword);
 
-                    int count = Convert.ToInt32(await command.ExecuteScalarAsync());
+                    string? hashedPassword = await command.ExecuteScalarAsync() as string;
 
-                    if (count > 0)
+                   // if(string.IsNullOrEmpty(hashedPassword) && (Password, hashedPassword))
+                    if (hashedPassword != null && BCrypt.Net.BCrypt.Verify(Password, hashedPassword))
                     {
                         // Login successful
                         return true;
@@ -51,4 +47,3 @@ internal partial class Program
         }
     }
 }
-
