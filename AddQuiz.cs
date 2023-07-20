@@ -18,7 +18,7 @@ internal partial class Program
         catch (JsonException ex)
         {
             // Handle the JSON parsing exception
-            Console.WriteLine($"\nERROR: An error occurred during JsonDocument parsing: {ex.Message}\nExecution halted.\nPlease re-run and try again.");
+            ErrorHandler($"\nERROR: An error occurred during JsonDocument parsing: {ex.Message}\nExecution halted.\nPlease re-run and try again.");
             return;
         }
 
@@ -31,7 +31,7 @@ internal partial class Program
             // Check if the document is null before proceeding
             if (document is null)
             {
-                Console.WriteLine("\nERROR: Failed to generate the quiz. The JSON document is null.");
+                ErrorHandler("\nERROR: Failed to generate the quiz. The JSON document is null.");
                 connection.Close();
                 return;
             }

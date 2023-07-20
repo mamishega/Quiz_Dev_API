@@ -6,8 +6,10 @@
     <UserSecretsId>399c66e5-9bfa-4486-bc92-36d2f3ecf3ae</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
-    <PackageReference Include="newtonsoft.json" Version="13.0.3"/>
-    <PackageReference Include="npgsql" Version="7.0.4"/>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="newtonsoft.json" Version="13.0.3" />
+    <PackageReference Include="npgsql" Version="7.0.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
   </ItemGroup>
 </Project>

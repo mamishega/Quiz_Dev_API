@@ -3,8 +3,17 @@ using Npgsql;
 using BCrypt.Net;
 internal partial class Program
 {
-    public static async Task<string?> UpdateUser( string LoginId, string FirstName, string LastName, string Password, string connectionString)
+    public static async Task<dynamic> UpdateUser( string LoginId, string FirstName, string LastName, string Password, string connectionString)
     {
+
+        // Check if any of the required parameters (loginid, firstname, lastname) are missing or empty.
+            if (string.IsNullOrEmpty(LoginId)||string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName) || string.IsNullOrEmpty(Password))
+            {
+            
+                return Results.Ok ("One or more parameters are missing.");
+
+            
+            }
         //convert the loginid to lowercase
         LoginId = LoginId.ToLower();
 
@@ -23,7 +32,7 @@ internal partial class Program
             await connection.OpenAsync();
 
 
-            string SqlStatement = "UPDATE quiz_users SET  first_name = @FirstName, last_name = @LastName, password_hash = @Password WHERE login_id = @LoginId";
+            string SqlStatement = "UPDATE quiz_users SET  first_name = @FirstName, last_name = @LastName, password_hash = @Password WHERE login_id ILIKE @LoginId";
 
 
             // Create a new NpgsqlCommand object with the insert SQL statement and the database connection
