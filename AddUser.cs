@@ -16,10 +16,10 @@ internal partial class Program
         LoginId = LoginId.ToLower();
 
         // Capitalize the first letter of firstname and convert the rest to lowercase
-        FirstName = char.ToUpper(FirstName[0]) + FirstName.Substring(1).ToLower();
+        FirstName = char.ToUpper(FirstName[0]) + (FirstName.Substring(1)).ToLower();
 
         // Capitalize the first letter of lastname and convert the rest to lowercase
-       LastName = char.ToUpper(LastName[0]) + LastName.Substring(1).ToLower();
+       LastName = char.ToUpper(LastName[0]) + (LastName.Substring(1)).ToLower();
 
         // Establish a connection to the database using the provided connection string
         using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))

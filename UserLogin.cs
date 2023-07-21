@@ -23,7 +23,9 @@ internal partial class Program
                     Command.Parameters.AddWithValue("@loginid", NpgsqlTypes.NpgsqlDbType.Varchar, LoginId);  
                     int count = Convert.ToInt32(await Command.ExecuteScalarAsync());
                     if (count == 1) 
+                    {
                         return "Login ID is not active.";
+                    }
                 }
             }
             // At this point means the user is allowed to login or user_status is TRUE
